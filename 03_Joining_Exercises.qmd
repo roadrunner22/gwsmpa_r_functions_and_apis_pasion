@@ -26,7 +26,9 @@ counties_demographics <- readRDS(here("data", "counties_demographics.rds"))
 counties_elexresults <- readRDS(here("data", "counties_elexresults.rds"))
 counties_rural_urban_suburban <- readRDS(here("data", "counties_rural_urban_suburban.rds"))
 
-
+head(counties_demographics)
+head(counties_elexresults)
+head(counties_rural_urban_suburban)
 
 ```
 
@@ -40,15 +42,17 @@ Join together the election results and urban/suburban/rural tables above, and th
 
 ```{r}
 
-
-
+big <- inner_join(counties_elexresults, counties_rural_urban_suburban, by = "geoid")
 
 ```
 
 ```{r}
 
+virginia <- filter(big, state_code == "VA")
 
-
+virginia %>%
+  group_by(rural_urban) %>%
+  summarize(avg_trump_vote = mean(pct_r_2020))
 
 
 ```
@@ -59,7 +63,11 @@ Now using the joined dataset, come up with two groupings you find interesting or
 
 ```{r}
 
-
+big %>%
+  filter(state_code == "TX") %>%
+  group_by(rural_urban) %>%
+  summarize(dem_voter_percent = mean(pct_d_2020 - pct_d_2016))
+  
 
 
 ```
@@ -67,7 +75,10 @@ Now using the joined dataset, come up with two groupings you find interesting or
 
 ```{r}
 
-
+big %>%
+  filter(state_code == "VA") %>%
+  group_by(rural_urban) %>%
+  summarize(republican_voter_percent = mean(pct_r_2020 - pct_r_2016))
 
 
 

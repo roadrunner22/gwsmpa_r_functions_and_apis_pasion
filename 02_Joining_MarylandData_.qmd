@@ -85,8 +85,7 @@ We can do this join multiple ways and get a similar result. We can put the popul
 
 ```{r}
 maryland_population %>% 
-  left_join(county_voters_2020, by="COUNTY") %>% 
-  nrow()
+  left_join(county_voters_2020, by="COUNTY") 
 ```
 
 Remove the nrow and run it again for yourself. By default, `dplyr` will do a "natural" join, where it'll match all the matching columns in both tables. So if we take out the by, it'll use all the common columns between the tables. That may not be right in every instance but let's try it. If it works, we should get 24 rows.
@@ -118,7 +117,8 @@ maryland_demographics
 Again, we can use a `left_join` to make our demographic data available. This time we'll need to specify the two fields to join because they do not have identical names. We'll use `COUNTY` from our population data and `NAME` from the demographic data, and the order matters - the first column is from the dataframe you name *first*.
 
 ```{r, error=TRUE}
-maryland_population_with_voters_and_demographics <- maryland_population_with_voters %>% 
+maryland_population_with_voters_and_demographics <- 
+  maryland_population_with_voters %>% 
   left_join(maryland_demographics, by=c("COUNTY"="NAME"))
 ```
 
